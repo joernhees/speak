@@ -90,9 +90,26 @@ label {
 
     <script>
 var synth = window.speechSynthesis;
-
 var inputForm = document.querySelector('form');
 var inputTxt = document.querySelector('.txt');
+
+function selectVoice(){
+  var voices = synth.getVoices();
+  // EN only voices
+  var voices_ = voices.filter(v => v.lang.startsWith('en-'));
+  if (voices_.length == 1) return voices_[0];
+  if (voices_.length == 0) return null;
+
+  // check for default
+  voices = voices_;
+  voices_ = voices.filter(v => v.default);
+  if (voices_.length >= 1) {
+    return voices_[0];
+  }
+  return voices[0];
+}
+var voice = selectVoice();
+
 
 function speak(){
     window.speechSynthesis.cancel();
@@ -114,7 +131,11 @@ function speak(){
       utterThis.onerror = function (event) {
           console.error('SpeechSynthesisUtterance.onerror');
       }
-      utterThis.lang = 'en-US';
+      if (voice !== null) {
+        utterThis.voice = voice;
+      } else {
+        utterThis.lang = 'en-US';
+      }
       
       synth.speak(utterThis);
     } else {

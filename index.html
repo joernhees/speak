@@ -203,11 +203,14 @@ voiceSelect.onchange = function(){
   speak();
 }
 
-// parse params
-(new URL(window.location.href)).searchParams.forEach((x, y) =>
-    document.getElementById(y).value = x);
+function whenReady(){
+  // parse params
+  (new URL(window.location.href)).searchParams.forEach((x, y) =>
+      document.getElementById(y).value = x);
 
-speak();
+  speak();
+}
+window.onload = whenReady;
     </script>
   </body>
 </html>

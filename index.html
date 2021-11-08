@@ -159,6 +159,7 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 }
 
 function speak(){
+    window.speechSynthesis.cancel();
     if (synth.speaking) {
         console.error('speechSynthesis.speaking');
         return;
@@ -215,7 +216,7 @@ function whenReady(){
   (new URL(window.location.href)).searchParams.forEach((x, y) =>
       document.getElementById(y).value = x);
 
-  speak();
+  setTimeout(speak, 250);
 }
 window.onload = whenReady;
     </script>

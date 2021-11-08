@@ -163,6 +163,12 @@ function speak(){
         console.error('speechSynthesis.speaking');
         return;
     }
+    
+    // change URL query part to reflect text field
+    const url = new URL(window.location.href);
+    url.searchParams.set('text', inputTxt.value);
+    window.history.pushState({}, 'new text', url);
+    
     if (inputTxt.value !== '') {
       var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
       utterThis.onend = function (event) {

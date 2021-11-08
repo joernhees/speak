@@ -142,6 +142,7 @@ function populateVoiceList() {
     
     if(voices[i].default) {
       option.textContent += ' -- DEFAULT';
+      selectedIndex = i; // select default voice by default
     }
 
     option.setAttribute('data-lang', voices[i].lang);
@@ -162,24 +163,24 @@ function speak(){
         return;
     }
     if (inputTxt.value !== '') {
-    var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
-    utterThis.onend = function (event) {
-        console.log('SpeechSynthesisUtterance.onend');
-    }
-    utterThis.onerror = function (event) {
-        console.error('SpeechSynthesisUtterance.onerror');
-    }
-    var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
-    for(i = 0; i < voices.length ; i++) {
-      if(voices[i].name === selectedOption) {
-        utterThis.voice = voices[i];
-        break;
+      var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+      utterThis.onend = function (event) {
+          console.log('SpeechSynthesisUtterance.onend');
       }
+      utterThis.onerror = function (event) {
+          console.error('SpeechSynthesisUtterance.onerror');
+      }
+      var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+      for(i = 0; i < voices.length ; i++) {
+        if(voices[i].name === selectedOption) {
+          utterThis.voice = voices[i];
+          break;
+        }
+      }
+      utterThis.pitch = pitch.value;
+      utterThis.rate = rate.value;
+      synth.speak(utterThis);
     }
-    utterThis.pitch = pitch.value;
-    utterThis.rate = rate.value;
-    synth.speak(utterThis);
-  }
 }
 
 inputForm.onsubmit = function(event) {
@@ -201,6 +202,12 @@ rate.onchange = function() {
 voiceSelect.onchange = function(){
   speak();
 }
+
+// parse params
+(new URL(window.location.href)).searchParams.forEach((x, y) =>
+    document.getElementById(y).value = x);
+
+speak();
     </script>
   </body>
 </html>

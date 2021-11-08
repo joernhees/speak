@@ -165,12 +165,12 @@ function speak(){
         return;
     }
     
-    // change URL query part to reflect text field
+    // changes URL query part to reflect text field
     const url = new URL(window.location.href);
-    url.searchParams.set('text', inputTxt.value);
-    window.history.pushState({}, 'new text', url);
-    
+
     if (inputTxt.value !== '') {
+      url.searchParams.set('text', inputTxt.value);
+    
       var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
       utterThis.onend = function (event) {
           console.log('SpeechSynthesisUtterance.onend');
@@ -188,7 +188,11 @@ function speak(){
       utterThis.pitch = pitch.value;
       utterThis.rate = rate.value;
       synth.speak(utterThis);
+    } else {
+      url.searchParams.delete('text');
     }
+    window.history.pushState({}, 'new text', url);
+
 }
 
 inputForm.onsubmit = function(event) {

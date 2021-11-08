@@ -220,7 +220,7 @@ function whenReady(){
   (new URL(window.location.href)).searchParams.forEach((x, y) =>
       document.getElementById(y).value = x);
 
-  setTimeout(speak, 250);
+  setTimeout(speak, 100);
 }
 window.onload = whenReady;
     </script>

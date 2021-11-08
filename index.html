@@ -100,7 +100,7 @@ function selectVoice(){
   if (voices_.length == 1) return voices_[0];
   if (voices_.length == 0) return null;
 
-  // check for default
+  // prefer default
   voices = voices_;
   voices_ = voices.filter(v => v.default);
   if (voices_.length >= 1) {
@@ -131,6 +131,7 @@ function speak(){
       utterThis.onerror = function (event) {
           console.error('SpeechSynthesisUtterance.onerror');
       }
+      if (voice === null) { voice = selectVoice(); }  // try again (chrome: empty if not user-triggered)
       if (voice !== null) {
         utterThis.voice = voice;
       } else {
